@@ -1,23 +1,34 @@
-first_en, second_en = 0, 0 # индексы первой и последней f
-# флаги: only_first - есть только 1 f, all_f - минимум 2 f
-only_first, all_f = False, False
+# для поиска индексов напишем рекурсивную функцию
+# в аргументах: слово и первый индекс вхождения = 0
+def find_index_f(word, first_en=0):
+    # запускаем рекурсию, пока не найдем 1-ый индекс вхождения f
+    if word[0] != 'f':
+        return find_index_f(word[1:], first_en + 1)
+    
+    return first_en
+
+
 word = input()
 
-# пробегаемся по индексам слова
-for i in range(len(word)):
-    let = word[i]
-    if let == 'f':
-        # если есть индекс первой f записываем индекс второй
-        if only_first:
-            second_en = i
-            all_f = True
-        # если нет индекса первой f
-        else:
-            first_en = i
-            only_first = True
+# запускаем функцию, только если в слове есть f
+if 'f' in word:
+    # ищем первый индекс f в слове
+    first_ind = find_index_f(word)
+    # чтобы найти последний индекс, то просто переворачиваем слово
+    # и ищем первый индекс f, но в уже перевернутом слове
+    # затем из длины слова вычитаем индекс и еденицу, поскольку
+    # индекс начинается с 0
+    second_ind = len(word) - find_index_f(word[::-1]) - 1
 
-# по тому какой флаг определяем сколько индексов нужно вывести
-if all_f:
-    print(first_en, second_en)
-elif only_first:
-    print(first_en)
+    if first_ind == second_ind:
+        print(first_ind)
+    else:
+        print(first_ind, second_ind)
+
+else:
+    print('Нет ни одного f в слове')
+
+
+
+
+
